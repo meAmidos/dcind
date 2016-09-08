@@ -47,7 +47,7 @@ Here is an example of Concourse [job](http://concourse.ci/concepts.html) that us
                 docker load -i busybox/image
                 docker tag "$(cat busybox/image-id)" "$(cat busybox/repository):$(cat busybox/tag)"
 
-                # This is just to visually check in the log that the redis image has been loaded successfully.
+                # This is just to visually check in the log that images have been loaded successfully
                 docker images
 
                 # Run the tests container and its dependencies.
@@ -55,7 +55,7 @@ Here is an example of Concourse [job](http://concourse.ci/concepts.html) that us
 
                 # Cleanup.
                 # Not sure that this is required.
-                # It's quite possible that Concourse is smart enought to clean up the Docker mess itself.
+                # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
                 docker-compose -f code/example/integration.yml down
                 docker volume rm $(docker volume ls -q)
 
