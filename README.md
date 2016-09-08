@@ -1,4 +1,4 @@
-# dcind (Docker-Compose-IN-Docker)
+# dcind (Docker-Compose-in-Docker)
 
 Use this ```Dockerfile``` to build a base image for your integration tests in [Concourse CI](http://concourse.ci/). Alternatively, you can use a ready-to-use image from Docker Hub: [amidos/dcind](https://hub.docker.com/r/amidos/dcind/).
 
