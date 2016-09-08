@@ -1,0 +1,13 @@
+version: "2"
+
+services:
+  myredis:
+    image: redis:alpine
+    container_name: myredis
+
+  tests:
+    image: busybox
+    container_name: mytests
+    depends_on:
+      - myredis
+    command: "true"

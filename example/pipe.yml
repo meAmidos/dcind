@@ -1,0 +1,78 @@
+---
+resources:
+  - name: code
+    type: git
+    source:
+      uri: https://github.com/meAmidos/dcind
+
+  - name: redis
+    type: docker-image
+    source:
+      repository: redis
+
+jobs:
+  - name: unit-tests
+    plan:
+      - get: code
+        params: {depth: 1}
+      - task: Run unit tests
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: busybox
+          inputs:
+            - name: code
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                ./code/example/unit-tests.sh
+
+  - name: integration
+    plan:
+      - aggregate:
+        - get: code
+          params: {depth: 1}
+          passed: [unit-tests]
+        - get: redis
+          params: {save: true}
+      - task: Run integration tests
+        privileged: true
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: amidos/dcind
+          inputs:
+            - name: code
+            - name: redis
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                source /docker-lib.sh
+                start_docker
+
+                # Strictly speaking, preloading of the image is not required. However you might want it for a couple of reasons:
+                # - If the image is from a private repository, it is much easier to let concourse pull it, and then pass it through to the task.
+                # - When the image is passed to the task, Concourse can often get the image from its cache.
+                docker load -i redis/image
+                docker tag "$(cat redis/image-id)" "$(cat redis/repository):$(cat redis/tag)"
+
+                # This is just to visually check in the log that the redis image has been loaded successfully.
+                docker images
+
+                # Run the tests container and its dependencies.
+                docker-compose -f code/example/integration.yml run tests
+
+                # Cleanup.
+                # Not sure that this is required.
+                # It's quite possible that Concourse is smart enought to clean up the Docker mess itself.
+                docker-compose -f code/example/integration.yml down
+                docker volume rm $(docker volume ls -q)
+
