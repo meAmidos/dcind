@@ -9,6 +9,12 @@ resources:
     type: docker-image
     source:
       repository: redis
+      tag: alpine
+
+  - name: busybox
+    type: docker-image
+    source:
+      repository: busybox
 
 jobs:
   - name: unit-tests
@@ -37,7 +43,10 @@ jobs:
         - get: code
           params: {depth: 1}
           passed: [unit-tests]
+          trigger: true
         - get: redis
+          params: {save: true}
+        - get: busybox
           params: {save: true}
       - task: Run integration tests
         privileged: true
@@ -50,6 +59,7 @@ jobs:
           inputs:
             - name: code
             - name: redis
+            - name: busybox
           run:
             path: sh
             args:
@@ -63,6 +73,9 @@ jobs:
                 # - When the image is passed to the task, Concourse can often get the image from its cache.
                 docker load -i redis/image
                 docker tag "$(cat redis/image-id)" "$(cat redis/repository):$(cat redis/tag)"
+
+                docker load -i busybox/image
+                docker tag "$(cat busybox/image-id)" "$(cat busybox/repository):$(cat busybox/tag)"
 
                 # This is just to visually check in the log that the redis image has been loaded successfully.
                 docker images
