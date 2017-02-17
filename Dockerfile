@@ -2,8 +2,8 @@
 FROM alpine:3.4
 MAINTAINER Dmitry Matrosov <amidos@amidos.me>
 
-ENV DOCKER_VERSION=1.12.1 \
-    DOCKER_COMPOSE_VERSION=1.8
+ENV DOCKER_VERSION=1.13.1 \
+    DOCKER_COMPOSE_VERSION=1.11.1
 
 # Install Docker and Docker Compose
 RUN apk --update --no-cache \
