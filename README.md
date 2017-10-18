@@ -2,9 +2,9 @@
 
 [![](https://images.microbadger.com/badges/image/amidos/dcind.svg)](http://microbadger.com/images/amidos/dcind "Get your own image badge on microbadger.com")
 
-Use this ```Dockerfile``` to build a base image for your integration tests in [Concourse CI](http://concourse.ci/). Alternatively, you can use a ready-to-use image from Docker Hub: [amidos/dcind](https://hub.docker.com/r/amidos/dcind/).
+Use this ```Dockerfile``` to build a base image for your integration tests in [Concourse CI](http://concourse.ci/). Alternatively, you can use a ready-to-use image from the Docker Hub: [amidos/dcind](https://hub.docker.com/r/amidos/dcind/). The image is Alpine based.
 
-Here is an example of Concourse [job](http://concourse.ci/concepts.html) that uses ```amidos/dcind``` image to run a bunch of containers in a task, and then runs the integration test suite. You can find the full example in the ```example``` directory.
+Here is an example of a Concourse [job](http://concourse.ci/concepts.html) that uses ```amidos/dcind``` image to run a bunch of containers in a task, and then runs the integration test suite. You can find a full version of this example in the [```example```](example) directory.
 
 ```yaml
   - name: integration
@@ -38,9 +38,9 @@ Here is an example of Concourse [job](http://concourse.ci/concepts.html) that us
                 source /docker-lib.sh
                 start_docker
 
-                # Strictly speaking, preloading of images is not required.
-                # However you might want to do it for a couple of reasons:
-                # - If the image is from a private repository, it is much easier to let concourse pull it,
+                # Strictly speaking, preloading of Docker images is not required.
+                # However, you might want to do this for a couple of reasons:
+                # - If the image comes from a private repository, it is much easier to let Concourse pull it,
                 #   and then pass it through to the task.
                 # - When the image is passed to the task, Concourse can often get the image from its cache.
                 docker load -i redis/image
@@ -52,11 +52,11 @@ Here is an example of Concourse [job](http://concourse.ci/concepts.html) that us
                 # This is just to visually check in the log that images have been loaded successfully
                 docker images
 
-                # Run the tests container and its dependencies.
+                # Run the container with tests and its dependencies.
                 docker-compose -f code/example/integration.yml run tests
 
                 # Cleanup.
-                # Not sure that this is required.
+                # Not sure if this is required.
                 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
                 docker-compose -f code/example/integration.yml down
                 docker volume rm $(docker volume ls -q)
