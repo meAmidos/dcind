@@ -68,8 +68,10 @@ jobs:
                 source /docker-lib.sh
                 start_docker
 
-                # Strictly speaking, preloading of the image is not required. However you might want it for a couple of reasons:
-                # - If the image is from a private repository, it is much easier to let concourse pull it, and then pass it through to the task.
+                # Strictly speaking, preloading of Docker images is not required.
+                # However, you might want to do this for a couple of reasons:
+                # - If the image comes from a private repository, it is much easier to let Concourse pull it,
+                #   and then pass it through to the task.
                 # - When the image is passed to the task, Concourse can often get the image from its cache.
                 docker load -i redis/image
                 docker tag "$(cat redis/image-id)" "$(cat redis/repository):$(cat redis/tag)"
@@ -77,14 +79,14 @@ jobs:
                 docker load -i busybox/image
                 docker tag "$(cat busybox/image-id)" "$(cat busybox/repository):$(cat busybox/tag)"
 
-                # This is just to visually check in the log that image have been loaded successfully.
+                # This is just to visually check in the log that images have been loaded successfully.
                 docker images
 
-                # Run the tests container and its dependencies.
+                # Run the container with tests and its dependencies.
                 docker-compose -f code/example/integration.yml run tests
 
                 # Cleanup.
-                # Not sure that this is required.
+                # Not sure if this is required.
                 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
                 docker-compose -f code/example/integration.yml down
                 docker volume rm $(docker volume ls -q)
