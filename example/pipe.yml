@@ -3,7 +3,7 @@ resources:
   - name: code
     type: git
     source:
-      uri: https://github.com/josebarn/dcind
+      uri: https://github.com/meAmidos/dcind
 
 
   - name: redis
@@ -56,7 +56,7 @@ jobs:
           image_resource:
             type: docker-image
             source:
-              repository: josebarn/dcind
+              repository: amidos/dcind
           inputs:
             - name: code
             - name: redis
