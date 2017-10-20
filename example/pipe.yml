@@ -5,6 +5,7 @@ resources:
     source:
       uri: https://github.com/meAmidos/dcind
 
+
   - name: redis
     type: docker-image
     source:
@@ -90,4 +91,3 @@ jobs:
                 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
                 docker-compose -f code/example/integration.yml down
                 docker volume rm $(docker volume ls -q)
-
