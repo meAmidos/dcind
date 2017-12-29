@@ -1,5 +1,5 @@
 # Inspired by https://github.com/mumoshu/dcind
-FROM alpine:3.6
+FROM alpine:3.7
 MAINTAINER Dmitry Matrosov <amidos@amidos.me>
 
 ENV DOCKER_VERSION=17.05.0-ce \
