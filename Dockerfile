@@ -8,7 +8,7 @@ ENV DOCKER_VERSION=17.05.0-ce \
 
 # Install Docker and Docker Compose
 RUN apk --update --no-cache \
-    add curl device-mapper py-pip iptables && \
+    add curl util-linux device-mapper py-pip iptables && \
     rm -rf /var/cache/apk/* && \
     curl https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \
     mv /docker/* /bin/ && chmod +x /bin/docker* && \
