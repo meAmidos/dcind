@@ -15,3 +15,7 @@ RUN apk --no-cache add curl util-linux device-mapper py-pip iptables && \
 # Include useful functions to start/stop docker daemon in garden-runc containers in Concourse CI.
 # Example: source /docker-lib.sh && start_docker
 COPY docker-lib.sh /docker-lib.sh
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/sh"]
