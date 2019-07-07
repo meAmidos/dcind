@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Based on https://github.com/docker/compose/blob/master/docker-compose-entrypoint.sh
 
 set -e
