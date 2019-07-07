@@ -10,4 +10,4 @@ services:
     container_name: mytests
     depends_on:
       - myredis
-    command: "true"
+    command: "echo 'Tests OK'"

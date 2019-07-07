@@ -35,9 +35,6 @@ Here is an example of a Concourse [job](http://concourse.ci/concepts.html) that 
             args:
               - -exc
               - |
-                source /docker-lib.sh
-                start_docker
-
                 # Strictly speaking, preloading of Docker images is not required.
                 # However, you might want to do this for a couple of reasons:
                 # - If the image comes from a private repository, it is much easier to let Concourse pull it,
@@ -58,8 +55,6 @@ Here is an example of a Concourse [job](http://concourse.ci/concepts.html) that 
                 # Cleanup.
                 # Not sure if this is required.
                 # It's quite possible that Concourse is smart enough to clean up the Docker mess itself.
-                docker-compose -f code/example/integration.yml down
                 docker volume rm $(docker volume ls -q)
-
 
 ```

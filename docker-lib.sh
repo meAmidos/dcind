@@ -41,6 +41,13 @@ sanitize_cgroups() {
 }
 
 start_docker() {
+  echo "Starting Docker..."
+
+  if [ -f /tmp/docker.pid ]; then
+    echo "Docker is already running"
+    return
+  fi
+
   mkdir -p /var/log
   mkdir -p /var/run
 
@@ -79,6 +86,8 @@ start_docker() {
 }
 
 stop_docker() {
+  echo "Stopping Docker..."
+
   local pid=$(cat /tmp/docker.pid)
   if [ -z "$pid" ]; then
     return 0
@@ -86,4 +95,5 @@ stop_docker() {
 
   kill -TERM $pid
   wait $pid
+  rm /tmp/docker.pid
 }
