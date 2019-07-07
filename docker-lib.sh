@@ -1,4 +1,5 @@
 # Ref: https://github.com/concourse/docker-image-resource/blob/master/assets/common.sh
+#!/bin/bash
 
 sanitize_cgroups() {
   mkdir -p /sys/fs/cgroup

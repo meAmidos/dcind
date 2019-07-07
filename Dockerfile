@@ -6,7 +6,7 @@ ENV DOCKER_VERSION=18.09.7 \
     DOCKER_COMPOSE_VERSION=1.23.2
 
 # Install Docker and Docker Compose
-RUN apk --no-cache add curl util-linux device-mapper py-pip iptables && \
+RUN apk --no-cache add bash curl util-linux device-mapper py-pip iptables && \
     curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \
     mv /docker/* /bin/ && \
     chmod +x /bin/docker* && \
@@ -18,4 +18,4 @@ COPY docker-lib.sh /docker-lib.sh
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/bin/sh"]
+CMD ["/bin/bash"]
