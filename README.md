@@ -6,6 +6,8 @@ Use this ```Dockerfile``` to build a base image for your integration tests in [C
 
 Here is an example of a Concourse [job](http://concourse.ci/concepts.html) that uses ```amidos/dcind``` image to run a bunch of containers in a task, and then runs the integration test suite. You can find a full version of this example in the [```example```](example) directory.
 
+Note that `docker-lib.sh` has bash dependencies, so it is important to use `bash` in your task.
+
 ```yaml
   - name: integration
     plan:
@@ -31,10 +33,13 @@ Here is an example of a Concourse [job](http://concourse.ci/concepts.html) that 
             - name: redis
             - name: busybox
           run:
-            path: sh
+            path: bash
             args:
               - -exc
               - |
+                source /docker-lib.sh
+                start_docker
+
                 # Strictly speaking, preloading of Docker images is not required.
                 # However, you might want to do this for a couple of reasons:
                 # - If the image comes from a private repository, it is much easier to let Concourse pull it,
