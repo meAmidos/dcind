@@ -82,6 +82,9 @@ start_docker() {
     server_args="${server_args} --registry-mirror $2"
   fi
 
+  export server_args LOG_FILE
+  trap stop_docker EXIT
+
   try_start() {
     dockerd --data-root /scratch/docker ${server_args} >$LOG_FILE 2>&1 &
     echo $! > /tmp/docker.pid
@@ -97,13 +100,15 @@ start_docker() {
     done
   }
 
-  export server_args LOG_FILE
-  declare -fx try_start
-  trap stop_docker EXIT
+  if [ "$(command -v declare)" ]; then
+    declare -fx try_start
 
-  if ! timeout ${STARTUP_TIMEOUT} bash -ce 'while true; do try_start && break; done'; then
-    echo Docker failed to start within ${STARTUP_TIMEOUT} seconds.
-    return 1
+    if ! timeout ${STARTUP_TIMEOUT} bash -ce 'while true; do try_start && break; done'; then
+      echo Docker failed to start within ${STARTUP_TIMEOUT} seconds.
+      return 1
+    fi
+  else
+    try_start
   fi
 }
 
