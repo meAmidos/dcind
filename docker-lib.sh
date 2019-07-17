@@ -115,6 +115,10 @@ start_docker() {
 stop_docker() {
   echo "Stopping Docker..."
 
+  if [ ! -f /tmp/docker.pid ]; then
+    return 0
+  fi
+
   local pid=$(cat /tmp/docker.pid)
   if [ -z "$pid" ]; then
     return 0
