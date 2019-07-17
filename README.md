@@ -3,33 +3,9 @@
 [![](https://images.microbadger.com/badges/image/amidos/dcind.svg)](http://microbadger.com/images/amidos/dcind "Get your own image badge on microbadger.com")
 
 
-### Announcement
+### Versioning
 
-__The script that starts Docker in this image has been recently switched from `sh` to `bash`. While the image itself has `bash` installed, those users who rely on the `latest` tag of the `amidos/dcind` image and run the script in existing `sh`-based pipelines might encounter problems (see [#17][i17]).__
-
-__In other words, there has been a breaking change, and your pipeline might be broken. While a proper fix is underway, here is what you can do now:__
-
-* __Use the last known image version before the breaking change: `amidos/dcind@sha256:3c176a1df007201276564610f5c40fd3b56179c6ee75f23199f4ff508c28e6f5` instead of `amidos/dcind`.__
-* __Alternatively, update your pipeline to use `bash`. For example, in your Concourse task:__
-
-
-```yaml
-      ...
-      - task: Run integration tests
-        privileged: true
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: amidos/dcind
-          ...
-          run:
-            path: bash <======= HERE
-            args:
-              - -exc
-      ...
-```
+This repository and corresponding images on Docker Hub follow the semantic versioning [rules](https://semver.org/). It is advised to not rely on the `latest` tag when using `amidos/dcind` image in your CI pipelines. Consider using a specific version, like `amidos/dcind:1`.
 
 ### Usage
 
