@@ -1,6 +1,6 @@
 # Inspired by https://github.com/mumoshu/dcind
 FROM alpine:3.10
-MAINTAINER Dmitry Matrosov <amidos@amidos.me>
+LABEL maintainer="Dmitry Matrosov <amidos@amidos.me>"
 
 ENV DOCKER_VERSION=18.09.8 \
     DOCKER_COMPOSE_VERSION=1.24.1
