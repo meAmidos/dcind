@@ -7,7 +7,7 @@ workflow "Main workflow" {
 
 action "Shell Lint" {
   uses = "actions/bin/shellcheck@master"
-  args = "entrypoint.sh"
+  args = ["entrypoint.sh", "docker-lib.sh"]
 }
 
 action "Docker Lint" {
