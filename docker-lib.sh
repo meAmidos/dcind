@@ -4,6 +4,7 @@
 LOG_FILE=${LOG_FILE:-/tmp/docker.log}
 SKIP_PRIVILEGED=${SKIP_PRIVILEGED:-false}
 STARTUP_TIMEOUT=${STARTUP_TIMEOUT:-20}
+DOCKER_DATA_ROOT=${DOCKER_DATA_ROOT:"/scratch/docker"}
 
 sanitize_cgroups() {
   mkdir -p /sys/fs/cgroup
@@ -86,7 +87,7 @@ start_docker() {
   trap stop_docker EXIT
 
   try_start() {
-    dockerd --data-root /scratch/docker ${server_args} >$LOG_FILE 2>&1 &
+    dockerd --data-root ${DOCKER_DATA_ROOT} ${server_args} >$LOG_FILE 2>&1 &
     echo $! > /tmp/docker.pid
 
     sleep 1
