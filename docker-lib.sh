@@ -4,7 +4,7 @@
 LOG_FILE=${LOG_FILE:-/tmp/docker.log}
 SKIP_PRIVILEGED=${SKIP_PRIVILEGED:-false}
 STARTUP_TIMEOUT=${STARTUP_TIMEOUT:-20}
-DOCKER_DATA_ROOT=${DOCKER_DATA_ROOT:"/scratch/docker"}
+DOCKER_DATA_ROOT=${DOCKER_DATA_ROOT:-/scratch/docker}
 
 sanitize_cgroups() {
   mkdir -p /sys/fs/cgroup
@@ -83,11 +83,11 @@ start_docker() {
     server_args="${server_args} --registry-mirror $2"
   fi
 
-  export server_args LOG_FILE
+  export server_args LOG_FILE DOCKER_DATA_ROOT
   trap stop_docker EXIT
 
   try_start() {
-    dockerd --data-root ${DOCKER_DATA_ROOT} ${server_args} >$LOG_FILE 2>&1 &
+    dockerd --data-root $DOCKER_DATA_ROOT ${server_args} >$LOG_FILE 2>&1 &
     echo $! > /tmp/docker.pid
 
     sleep 1
