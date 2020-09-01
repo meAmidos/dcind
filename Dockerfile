@@ -2,7 +2,7 @@
 FROM alpine:3.10
 LABEL maintainer="Dmitry Matrosov <amidos@amidos.me>"
 
-ENV DOCKER_VERSION=18.09.8 \
+ENV DOCKER_VERSION=19.03.12 \
     DOCKER_COMPOSE_VERSION=1.24.1
 
 # Install Docker and Docker Compose
