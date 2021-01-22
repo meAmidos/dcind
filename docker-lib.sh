@@ -105,6 +105,7 @@ start_docker() {
     declare -fx try_start
 
     if ! timeout ${STARTUP_TIMEOUT} bash -ce 'while true; do try_start && break; done'; then
+      cat "${LOG_FILE}"
       echo Docker failed to start within ${STARTUP_TIMEOUT} seconds.
       return 1
     fi
