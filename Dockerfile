@@ -1,17 +1,11 @@
 # Inspired by https://github.com/mumoshu/dcind
-FROM alpine:3.10
+FROM alpine:3.18
 LABEL maintainer="Dmitry Matrosov <amidos@amidos.me>"
 
-ENV DOCKER_VERSION=18.09.8 \
-    DOCKER_COMPOSE_VERSION=1.24.1
-
-# Install Docker and Docker Compose
-RUN apk --no-cache add bash curl util-linux device-mapper py-pip python-dev libffi-dev openssl-dev gcc libc-dev make iptables && \
-    curl https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz | tar zx && \
-    mv /docker/* /bin/ && \
-    chmod +x /bin/docker* && \
-    pip install docker-compose==${DOCKER_COMPOSE_VERSION} && \
-    rm -rf /root/.cache
+# Install Docker (23.0.6) and Docker Compose (v2.17.3) and other utilities
+# https://pkgs.alpinelinux.org/package/v3.18/community/x86_64/docker
+# https://pkgs.alpinelinux.org/package/v3.18/community/x86_64/docker-cli-compose
+RUN apk --no-cache add bash curl util-linux device-mapper libffi-dev openssl-dev gcc libc-dev make iptables docker docker-cli-compose
 
 # Include functions to start/stop docker daemon
 COPY docker-lib.sh /docker-lib.sh

@@ -2,6 +2,9 @@
 
 [![](https://images.microbadger.com/badges/image/amidos/dcind.svg)](http://microbadger.com/images/amidos/dcind "Get your own image badge on microbadger.com")
 
+## Tulip Modifications
+
+We have upgraded Docker and Docker Compose in our image. Instead of using Python and PIP to install Docker Compose, we use a simple apk packages with an updated Alpine base image, because the pip installation no longer supported Docker Compose 2.x.
 
 ### Versioning
 
