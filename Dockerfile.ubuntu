@@ -11,11 +11,17 @@ RUN apt-get update
 # from https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/How-to-install-Docker-and-docker-compose-on-Ubuntu#:~:text=Docker%20and%20compose%20install%20steps%20on%20Ubuntu&text=Download%20Docker%20GPG%20file,Docker%20and%20docker%20compose%20setup
 RUN apt-get -y install curl gnupg ca-certificates lsb-release git-all
 RUN mkdir -p /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee -a /etc/apt/sources.list.d/docker.list > /dev/null
+# https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg 
+RUN chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee -a /etc/apt/sources.list.d/github-cli.list > /dev/null
+
 # must run it "update" again per: https://stackoverflow.com/questions/71393595/installing-docker-in-ubuntu-from-repo-cant-find-a-repo
 RUN apt-get update
+RUN apt-get -y install gh
 RUN apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-USER runner
+#USER runner
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/bin/bash"]
